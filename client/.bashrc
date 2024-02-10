@@ -114,6 +114,7 @@ alias haas='cd $REPOS/haas'
 alias home='cd $HOME'
 alias repos='cd $REPOS'
 alias dotfiles='cd $REPOS/haas/dotfiles'
+alias notes='cd $REPOS/notes'
 
 # Automatically ls when you CD into a directory since its what you do anyway
 cd() {
@@ -205,3 +206,5 @@ PROMPT_COMMAND='__git_ps1 "\[\e[33m\]\u\[\e[0m\]@\[\e[34m\]\h\[\e[0m\]:\[\e[35m\
 
 export PATH=/usr/local/bin:$HOME/repos/haas/scripts:$HOME/go/bin:$HOME/.local/share/bob/v0.9.5/nvim-linux64/bin:$PATH
 . "$HOME/.cargo/env"
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
