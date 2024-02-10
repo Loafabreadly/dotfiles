@@ -18,7 +18,7 @@ opt.foldenable = false
 -- colorschemes
 -- require('gruvbox-material').setup()
 -- o.termguicolors = true
--- opt.gruvbox_material_enable_italic_comment = 1
+opt.gruvbox_material_enable_italic_comment = 1
 -- undo
 -- vim.opt.undodir = vim.fn.expand('~/.nvim/undodir')
 
@@ -47,4 +47,5 @@ opt.linebreak = true
 --
 -- opt.vim_markdown_conceal = 0
 --
-vim.g.mkdp_browser = "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"
+vim.g.mkdp_browser = "/mnt/c/Program Files/Mozilla Firefox/firefox.exe"
+opt.wildignore:remove(".*")
