@@ -92,6 +92,8 @@ alias last='find . -type f -not -path "*/\.*" -exec ls -lrt {} +'
 alias c='clear'
 alias h='history'
 alias tree='tree --dirsfirst -F'
+alias p='pomo'
+alias ebrc='nv ~/repos/haas/dotfiles/client/.bashrc'
 
 alias jan='cal -m 01'
 alias feb='cal -m 02'
@@ -110,6 +112,8 @@ alias nv='nvim'
 alias lg='lazygit'
 alias haas='cd $REPOS/haas'
 alias home='cd $HOME'
+alias repos='cd $REPOS'
+alias dotfiles='cd $REPOS/haas/dotfiles'
 
 # Automatically ls when you CD into a directory since its what you do anyway
 cd() {
@@ -145,8 +149,7 @@ extract() {
 }
 
 # Show current network information
-netinfo ()
-{
+netinfo() {
 	echo "--------------- Network Information ---------------"
 	/sbin/ifconfig | awk /'inet addr/ {print $2}'
 	echo ""
@@ -160,18 +163,18 @@ netinfo ()
 
 # IP address lookup
 alias whatismyip="whatsmyip"
-function whatsmyip ()
-{
+function whatsmyip() {
 	# Dumps a list of all IP addresses for every device
 	# /sbin/ifconfig |grep -B1 "inet addr" |awk '{ if ( $1 == "inet" ) { print $2 } else if ( $2 == "Link" ) { printf "%s:" ,$1 } }' |awk -F: '{ print $1 ": " $3 }';
 
 	# Internal IP Lookup
-	echo -n "Internal IP: " ; /sbin/ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'
+	echo -n "Internal IP: "
+	/sbin/ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'
 
 	# External IP Lookup
-	echo -n "External IP: " ; wget http://smart-ip.net/myip -O - -q
+	echo -n "External IP: "
+	wget http://smart-ip.net/myip -O - -q
 }
-
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -200,5 +203,5 @@ export GIT_PS1_DESCRIBE_STYLE="branch"
 PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 PROMPT_COMMAND='__git_ps1 "\[\e[33m\]\u\[\e[0m\]@\[\e[34m\]\h\[\e[0m\]:\[\e[35m\]\W\[\e[0m\]" " \n$ "'
 
-export PATH=/usr/local/bin:$HOME/repos/haas/scripts:$HOME/.local/share/bob/v0.9.5/nvim-linux64/bin:$PATH
+export PATH=/usr/local/bin:$HOME/repos/haas/scripts:$HOME/go/bin:$HOME/.local/share/bob/v0.9.5/nvim-linux64/bin:$PATH
 . "$HOME/.cargo/env"
