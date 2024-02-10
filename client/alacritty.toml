@@ -1,0 +1,16 @@
+# themes from https://github.com/alacritty/alacritty-theme
+
+import = ["~/.config/alacritty/themes/themes/gruvbox_material_medium_dark.toml"]
+
+[font]
+size = 14
+
+[font.normal]
+family = "UbuntuMono Nerd Font"
+
+[window]
+decorations = "none"
+dimensions = { columns = 240, lines = 30 }
+[window.padding]
+x = 10
+y = 10

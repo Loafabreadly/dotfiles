@@ -1,0 +1,21 @@
+#!/bin/bash
+
+echo -e "Performing update and installing commong libs"
+apt update
+apt install git gh curl clang -y
+
+echo -e "Installing LazyGit"
+
+LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+tar xf lazygit.tar.gz lazygit
+install lazygit /usr/local/bin
+
+echo -e "Installing bob to setup neovim"
+
+curl -LO https://github.com/MordechaiHadad/bob/releases/latest/download/bob-linux-amd64.tar.gz
+tar -xvf bob-linux-amd64.tar.gz
+install bob /usr/local/bin/
+
+echo -e "Installing stable neovim"
+bob install stable
