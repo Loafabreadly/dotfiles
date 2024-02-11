@@ -1,13 +1,22 @@
 #!/bin/bash
+clear
+
+echo -e "As part of this installation, we will be configuring the terminal to use the UbuntuMono, Nerd Font. If this font is not already installed, please install it from here:"
+echo -e "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/UbuntuMono.zip"
+read -p "Press enter to confirm the font is installed, CTL + C to cancel and go install the font"
 
 echo -e "Creating temp directory we will be using"
 mkdir -p ~/tmp
-cd ~/tmp
 
 echo -e "Performing update and installing commong libs"
 apt update
-apt install git gh curl clang lynx nmap jq python-is-python3 figlet build-essential procps file   -y
+apt install git gh curl clang lynx nmap jq python-is-python3 figlet build-essential procps file ripgrep fd-find   -y
 
+# Install Homebrew
+echo -e "Installing Homebrew"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install LazyGit
 echo -e "Installing LazyGit"
 
 LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
@@ -15,6 +24,8 @@ curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/lates
 tar xf lazygit.tar.gz lazygit
 install lazygit /usr/local/bin
 
+
+# Install Bob/Nvim
 echo -e "Installing bob to setup neovim"
 
 curl -LO https://github.com/MordechaiHadad/bob/releases/latest/download/bob-linux-amd64.tar.gz
@@ -41,7 +52,3 @@ file=/tmp/k9s.tar.gz
 url="https://github.com/derailed/k9s/releases/download/v${version}/k9s_Linux_amd64.tar.gz"
 mkdir -p ~/.local/bin
 curl -Lo "$file" "$url" && tar xzf "$file" -C ~/.local/bin k9s
-
-# Install Homebrew
-echo -e "Installing Homebrew"
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
