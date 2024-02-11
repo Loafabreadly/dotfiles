@@ -204,7 +204,7 @@ export GIT_PS1_DESCRIBE_STYLE="branch"
 PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 PROMPT_COMMAND='__git_ps1 "\[\e[33m\]\u\[\e[0m\]@\[\e[34m\]\h\[\e[0m\]:\[\e[35m\]\W\[\e[0m\]" " \n$ "'
 
-export PATH=/usr/local/bin:$HOME/repos/haas/scripts:$HOME/go/bin:$HOME/.local/share/bob/v0.9.5/nvim-linux64/bin:$PATH
+export PATH=/usr/local/bin:$HOME/repos/haas/scripts:$HOME/go/bin:$HOME/.local/bin:$HOME/.local/share/bob/v0.9.5/nvim-linux64/bin:$PATH
 . "$HOME/.cargo/env"
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
