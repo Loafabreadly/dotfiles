@@ -9,8 +9,8 @@ echo -e "Creating temp directory we will be using"
 mkdir -p ~/tmp
 
 echo -e "Performing update and installing commong libs"
-apt update
-apt install git gh curl clang lynx nmap jq python-is-python3 figlet build-essential procps file ripgrep fd-find   -y
+sudo apt update
+sudo apt install git gh curl clang lynx nmap jq python-is-python3 figlet build-essential procps file ripgrep fd-find   -y
 
 # Install Homebrew
 echo -e "Installing Homebrew"
@@ -23,7 +23,8 @@ LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/re
 curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
 tar xf lazygit.tar.gz lazygit
 install lazygit /usr/local/bin
-
+sudo rm -r lazygit
+sudo rm lazygit.tar.gz
 
 # Install Bob/Nvim
 echo -e "Installing bob to setup neovim"
@@ -31,6 +32,7 @@ echo -e "Installing bob to setup neovim"
 curl -LO https://github.com/MordechaiHadad/bob/releases/latest/download/bob-linux-amd64.tar.gz
 tar -xvf bob-linux-amd64.tar.gz
 install bob /usr/local/bin/
+rm bob-linux-amd64.tar.gz
 
 echo -e "Installing stable neovim"
 bob install stable
