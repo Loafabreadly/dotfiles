@@ -21,7 +21,7 @@ git clone https://github.com/Loafabreadly/dotfiles.git
 cd ./dotfiles
 ```
 
-Create the symlinks using GNU Stow
+Create the symlinks using GNU Stow from the current working dir, aimed at the home dir
 ```bash
-stow .
+sudo stow . -t ~
 ```

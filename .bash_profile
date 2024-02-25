@@ -1,7 +1,7 @@
 #!/bin/bash
 clear
 
-figlet "$(hostname)" | lolcat -f
+figlet -c -t "$(hostname)" | lolcat -f
 
 if [ -r ~/.bashrc ]; then
   source ~/.bashrc
