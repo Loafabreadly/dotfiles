@@ -22,19 +22,6 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-	debian_chroot=$(cat /etc/debian_chroot)
-fi
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm* | rxvt*)
-	PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-	;;
-*) ;;
-esac
-
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
 	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -52,13 +39,18 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 
 # config
 export BROWSER="firefox"
-export EDITOR="nano"
-export VISUAL="nano"
+export EDITOR="code"
+export VISUAL="code"
 
 # directories
 export REPOS="$HOME/repos"
 export GITUSER="Loafabreadly"
 export GHREPOS="$REPOS"
+alias haas='cd $REPOS/haas'
+alias home='cd $HOME'
+alias repos='cd $REPOS'
+alias dotfiles='cd $REPOS/haas/dotfiles'
+alias notes='cd $REPOS/notes'
 
 # Make MAN pages less painful to read
 export LESS_TERMCAP_mb=$'\E[01;31m'
@@ -74,8 +66,6 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias k='kubectl'
-source <(kubectl completion bash)
-complete -o default -F __start_kubectl k
 alias sn='sudo nano'
 alias kgp='kubectl get pods'
 alias ..='cd ..;pwd'
@@ -85,7 +75,7 @@ alias ll='ls -la'
 # alias la='exa -laghm@ --all --icons --git --color=always'
 alias la='ls -lathr'
 alias t='tmux'
-export KUBE_EDITOR=nano
+export KUBE_EDITOR=code
 export TERM=xterm-256color
 # finds all files recursively and sorts by last modification, ignore hidden files
 alias last='find . -type f -not -path "*/\.*" -exec ls -lrt {} +'
@@ -94,7 +84,6 @@ alias h='history'
 alias tree='tree --dirsfirst -F'
 alias p='pomo'
 alias ebrc='nv ~/repos/haas/dotfiles/client/.bashrc'
-
 alias jan='cal -m 01'
 alias feb='cal -m 02'
 alias mar='cal -m 03'
@@ -107,46 +96,16 @@ alias sep='cal -m 09'
 alias oct='cal -m 10'
 alias nov='cal -m 11'
 alias dec='cal -m 12'
-
 alias nv='nvim'
 alias lg='lazygit'
-alias haas='cd $REPOS/haas'
-alias home='cd $HOME'
-alias repos='cd $REPOS'
-alias dotfiles='cd $REPOS/haas/dotfiles'
-alias notes='cd $REPOS/notes'
+
+
+source <(kubectl completion bash)
+complete -o default -F __start_kubectl k
 
 # Automatically ls when you CD into a directory since its what you do anyway
 cd() {
 	builtin cd "$@" && ll
-}
-
-# Attempt to extract whatever file you throw at it
-extract() {
-	if [ -z ${1} ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
-		echo "Usage: extract <archive> [directory]"
-		echo "Example: extract presentation.zip."
-		echo "Valid archive types are:"
-		echo "tar.bz2, tar.gz, tar.xz, tar, bz2, gz, tbz2,"
-		echo "tbz, tgz, lzo, rar, zip, 7z, xz, txz, lzma and tlz"
-	else
-		case "$1" in
-		*.tar.bz2 | *.tbz2 | *.tbz) tar xvjf "$1" ;;
-		*.tgz) tar zxvf "$1" ;;
-		*.tar.gz) tar xvzf "$1" ;;
-		*.tar.xz) tar xvJf "$1" ;;
-		*.tar) tar xvf "$1" ;;
-		*.rar) 7z x "$1" ;;
-		*.zip) unzip "$1" ;;
-		*.7z) 7z x "$1" ;;
-		*.lzo) lzop -d "$1" ;;
-		*.gz) gunzip "$1" ;;
-		*.bz2) bunzip2 "$1" ;;
-		*.Z) uncompress "$1" ;;
-		*.xz | *.txz | *.lzma | *.tlz) xz -d "$1" ;;
-		*) echo "Sorry, '$1' could not be decompressed." ;;
-		esac
-	fi
 }
 
 # Show current network information
@@ -160,21 +119,6 @@ netinfo() {
 
 	/sbin/ifconfig | awk /'HWaddr/ {print $4,$5}'
 	echo "---------------------------------------------------"
-}
-
-# IP address lookup
-alias whatismyip="whatsmyip"
-function whatsmyip() {
-	# Dumps a list of all IP addresses for every device
-	# /sbin/ifconfig |grep -B1 "inet addr" |awk '{ if ( $1 == "inet" ) { print $2 } else if ( $2 == "Link" ) { printf "%s:" ,$1 } }' |awk -F: '{ print $1 ": " $3 }';
-
-	# Internal IP Lookup
-	echo -n "Internal IP: "
-	/sbin/ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'
-
-	# External IP Lookup
-	echo -n "External IP: "
-	wget http://smart-ip.net/myip -O - -q
 }
 
 # Add an "alert" alias for long running commands.  Use like so:
@@ -201,10 +145,16 @@ export GIT_PS1_SHOWCOLORHINTS=1
 export GIT_PS1_DESCRIBE_STYLE="branch"
 # Explicitly unset color (default anyhow). Use 1 to set it.
 
-PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-PROMPT_COMMAND='__git_ps1 "\[\e[33m\]\u\[\e[0m\]@\[\e[34m\]\h\[\e[0m\]:\[\e[35m\]\W\[\e[0m\]" " \n$ "'
+#PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+#PROMPT_COMMAND='__git_ps1 "\[\e[33m\]\u\[\e[0m\]@\[\e[34m\]\h\[\e[0m\]:\[\e[35m\]\W\[\e[0m\]" " \n$ "'
 
 export PATH=/usr/local/bin:$HOME/repos/haas/scripts:$HOME/go/bin:$HOME/.local/bin:$HOME/.local/share/bob/v0.9.5/nvim-linux64/bin:$PATH
 . "$HOME/.cargo/env"
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" # Setup so Homebrew works
+eval "$(oh-my-posh init bash --config /home/linuxbrew/.linuxbrew/opt/oh-my-posh/themes/emodipt-extend.omp.json)" #Setup our oh-my-posh prompt + theme
+
+
+
+# The last step should always be to start in our home directory
+cd $HOME
