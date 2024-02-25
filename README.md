@@ -18,7 +18,7 @@ Install GNU stow, via APT
 Clone the repository and CD into the directory
 ```bash
 git clone https://github.com/Loafabreadly/dotfiles.git
-cd ./dotfiles
+cd dotfiles
 ```
 
 Create the symlinks using GNU Stow from the current working dir, aimed at the home dir
